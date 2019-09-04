@@ -32,8 +32,8 @@ alias vol='amixer set -q Master '
 # WORK ALIASES #
 ################
 
-alias rebuild_all='cd ~/Warthog/scripts/build; ./build_packages.sh; cd ~/Warthog/vagrant/dev_env; vagrant reload; cd ~/Warthog/provisioning-ansible; ansible-playbook playbook.yml -i inventory --tags rebuild_all'
-alias py.test='py.test -v'
+alias VirtManager='cd ~/Documents/Cisco/tools/podbox-support/virt-manager/Virt-Manager.app/Contents/MacOS && ./Virt-Manager && cd -'
+alias CONNECT_VPN='~/Documents/Cisco/CONNECT_LWRVPN.sh'
 
 ################
 # MISC ALIASES #

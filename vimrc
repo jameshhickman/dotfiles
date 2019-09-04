@@ -1,50 +1,24 @@
+" Base vim overrides
 set nocompatible
-
 set noswapfile
-
-"256 Colors
-set t_Co=256
+set nowrap
 
 " Keybindings
-nnoremap a h
-nnoremap s j
-nnoremap w k
-nnoremap d l
-nnoremap h a
-nnoremap l s
-nnoremap j w
-nnoremap k d
-nnoremap kk dd
-
-" make backspace work like most other apps
-set backspace=2
+noremap a h
+noremap s j
+noremap w k
+noremap d l
+noremap h a
+noremap l s
+noremap j w
+noremap k d
+" map kk dd
 
 "Syntax Highlighting
 syntax on
 
-"Adding the 80 character column marker
-"set colorcolumn=80
-
 "Auto read when file is changed externally
 set autoread
-
-"Better command-line completion
-set wildmenu
-
-"Show partial commands above status line
-set showcmd
-
-"Autoindentation
-set autoindent
-
-"Always display status line
-set laststatus=2
-
-"Line numbers
-set number
-
-"Underline
-"set cursorline
 
 "Persistent undo
 set undodir=$HOME/.vim/undo
@@ -57,66 +31,118 @@ set shiftwidth=4
 set softtabstop=4
 set expandtab
 
+" OSX stupid backspace fix
+set backspace=indent,eol,start
+
+
 "Plugins
-execute pathogen#infect()
-"let g:airline_theme='raven'
-"let g:airline_theme='laederon'
+"""" START Vundle Configuration
 
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
-let g:airline_symbols.space = "\ua0"
-let g:airline_symbols.branch = ''
+" Disable file type for vundle
+filetype off                  " required
 
-"Plugin List
-"Pathogen as plugin manager
-"vim-airline
-"vim-fugitive
-"YouCompleteMe - DISABLED
-"PythonMode - DISABLED
-"Scratch
-"Ctrlp
-"Tagbar
-"Tabular
-"Easymotion
-"Nerdtree
-"Jedi
-"Pyflakes
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-" colorscheme twilight
-" colorscheme vividchalk
-" colorscheme feral
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
 
-" Ctrlp
-set runtimepath^=~/.vim/bundle/ctrlp.vim
+" Utility
+Plugin 'scrooloose/nerdtree' " File/directory browser
+Plugin 'majutsushi/tagbar' " Displays functions/tags in sidebar
+Plugin 'ervandew/supertab' " Improved tab completion
+" Plugin 'BufOnly.vim'
+Plugin 'wesQ3/vim-windowswap' " Swap arbitrary window splits.
+Plugin 'SirVer/ultisnips' " Code snippet insertion
+Plugin 'godlygeek/tabular' " Text aligner
+Plugin 'ctrlpvim/ctrlp.vim' " Fuzzy finder
+Plugin 'jeetsukumaran/vim-buffergator' " Buffer selector
+Plugin 'gilsondev/searchtasks.vim' " Find TODO, FIXME, etc
+Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " Autocomplete
+Plugin 'tpope/vim-dispatch' " Kick off builds
+Plugin 'universal-ctags/ctags'
 
-" Tagbar - Toggle the window with F8, go to it with F9
-nmap <F8> :TagbarToggle<CR>
-nmap <F9> :TagbarOpen fc<CR>
+" Generic Programming Support
+Plugin 'honza/vim-snippets'
+Plugin 'Townk/vim-autoclose'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'tobyS/vmustache'
+Plugin 'janko-m/vim-test'
+Plugin 'maksimr/vim-jsbeautify'
+Plugin 'vim-syntastic/syntastic' " Syntax checker
+Plugin 'neomake/neomake'
 
-" Automatic unfolding
-" set foldlevel=99
+" Markdown / Writting
+Plugin 'reedes/vim-pencil'
+Plugin 'tpope/vim-markdown'
+Plugin 'jtratner/vim-flavored-markdown'
+Plugin 'LanguageTool'
 
-" YouCompleteMe
-set wildmode=list,list
-set completeopt=menu
-let g:jedi#popup_select_first = 0
-let g:ycm_min_num_identifier_candidate_chars = 3
+" Git Support
+Plugin 'kablamo/vim-git-log'
+Plugin 'gregsexton/gitv'
+Plugin 'tpope/vim-fugitive'
+"Plugin 'jaxbot/github-issues.vim'
 
-" Easymotion
-"map <Leader> <Plug>(easymotion-prefix) <Space>
-let mapleader = "\<Space>"
+" Theme / Interface
+Plugin 'AnsiEsc.vim'
+Plugin 'ryanoasis/vim-devicons'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'ajh17/Spacegray.vim'
+Plugin 'phanviet/vim-monokai-pro'
 
-" Nerdtree
+call vundle#end()            " required
+filetype plugin indent on    " required
+"""" END Vundle Configuration
+
+
+""" THEME
+" Theme
+set background=dark
+let base16colorspace=256  " Access colors present in 256 colorspace
+colorscheme spacegray
+
+""" UI
+"Adding the 100 character column marker
+"set colorcolumn=100
+
+"Always display status line
+set laststatus=2
+
+"Line numbers
+set number
+
+" Vim-Airline Configuration
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+" let g:airline_powerline_fonts = 1
+let g:airline_theme='hybrid'
+let g:hybrid_custom_term_colors = 1
+let g:hybrid_reduced_contrast = 1
+
+" Syntastic Configuration
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+
+" Markdown Syntax Support
+augroup markdown
+    au!
+    au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+augroup END
+
+" Keybindings
 map <C-n> :NERDTreeToggle<CR>
+let g:NERDTreeMapActivateNode = "oo"
+let g:NERDTreeMapOpenVSplit = "os"
+let g:NERDTreeMapOpenSplit = "oi"
 
-" Jedi
-" let g:jedi#completions_command = "<Tab>"
-
-" Pyflakes
-" autocmd BufWritePost *.py call Flake8() " Automatically run on write
-" let g:flake8_show_in_gutter = 1 " Display marks in left column
-
-" VIMIUM EXTENSION FOR CHROME
+map <C-m> :TagbarToggle<CR>

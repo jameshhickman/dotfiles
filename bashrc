@@ -494,7 +494,7 @@ changeprofile()
         RAVENLITE)
           local NC="\e[0m"
           local DkGrn="\e[0;32m"
-          export PS1="\[$DkGrn\][ \[$NC\]\u \[$DkGrn\]]-[ \[$NC\]\w \[$DkGrn\]]-[ \[$NC\]"
+          export PS1="\[$DkGrn\][ \[$NC\]\u \[$DkGrn\]]-[ \[$NC\]\w \[$DkGrn\]]-[\[$NC\]\$(__git_ps1) \[$DkGrn\]]-[ \[$NC\]"
           ;;
         IMPERIAL)
           local YELLOW="\[\e[0;33m\]"
@@ -523,7 +523,7 @@ alias profile='echo $PROFILE'
 if [[ $PROFILE ]]; then
     changeprofile $PROFILE
 else
-    changeprofile STEEL
+    changeprofile RAVENLITE
 fi
 
 function cd()
@@ -531,10 +531,37 @@ function cd()
     builtin cd "$@" && changeprofile
 }
 
+#######
+# GIT #
+#######
+# https://gist.github.com/trey/2722934
+[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
+
 ################
 # LOAD ALIASES #
 ################
 source ~/.bash_aliases
 
 
+###########
+# LANCOPE #
+###########
+
+# export LDS_RELEASE_CHANNEL=stable
+export LDS_RELEASE_CHANNEL=alpha
+export LDS_MANIFEST_LOCATION=/Users/hhickman/Documents/Cisco/dev-infrastructure/lds-manifests/manifests/alpha.manifest
+export PATH=~/Documents/Cisco/dev-infrastructure/local-docker-stack/bin:$PATH
+# source ~/Documents/Cisco/dev-infrastructure/local-docker-stack/shell/docker.sh
+
+export CMUI_SW_LANGUAGE_PACK_LOCAL_PROJECT="/Users/hhickman/Documents/Cisco/I18N/language-packs"
+export CMUI_CM_LOCAL_PROJECT="/Users/hhickman/Documents/Cisco/CSI/central-management-ui"
+
+function add_cert_to_keystore()
+{
+    cd "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home" && sudo keytool -importcert -trustcacerts -alias $1 -keystore lib/security/cacerts -file $2 -storepass changeit && cd - >/dev/null
+}
+
+eval "$(pyenv init -)"
+
+export PATH=$PATH:~/Documents/bin
 fi      # End of Interactive Check
